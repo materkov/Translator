@@ -1,0 +1,543 @@
+﻿<Window x:Class="Translator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Translator="clr-namespace:Translator" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:UICommands="clr-namespace:Translator.UICommands" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Title="Translator" 
+        Height="{Binding Source={StaticResource IDEState}, Path=WindowHeight, Mode=TwoWay}" 
+        Width="{Binding Source={StaticResource IDEState}, Path=WindowWidth, Mode=TwoWay}" 
+        WindowState="{Binding Source={StaticResource IDEState}, Path=WindowState, Mode=TwoWay}"
+        Left="{Binding Source={StaticResource IDEState}, Path=WindowLeft, Mode=TwoWay}"
+        Top="{Binding Source={StaticResource IDEState}, Path=WindowTop, Mode=TwoWay}"
+        Name="mainWindow"
+        Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing"
+        Background="{Binding Source={StaticResource IDEState}, Path=MainWindowBackgroundBrush}">
+    <Window.Resources>
+        <RoutedUICommand x:Key="ExitCommand"/>
+        <RoutedUICommand x:Key="OpenProject"/>
+        <RoutedUICommand x:Key="BookmarksCommand" />
+        <RoutedUICommand x:Key="ColorsCommand" />
+        <RoutedUICommand x:Key="ShowContentsCommand" />
+        <RoutedUICommand x:Key="ShowCodeCommand"/>
+        <RoutedUICommand x:Key="ShowCodeCommentsCommand"/>
+        <RoutedUICommand x:Key="ShowCodeCheckboxesCommand"/>
+        <RoutedUICommand x:Key="ShowSolutionExplorerCommand"/>
+        <RoutedUICommand x:Key="ShowErrorsCommand"/>
+        <RoutedUICommand x:Key="CompileCurrentFileCommand"/>
+        <RoutedUICommand x:Key="ShowHotkeysCommand"/>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static UICommands:SaveCurrentFile.Instance}" Executed="OnSaveCurrentFileCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:SaveAllFiles.Instance}" Executed="OnSaveAllFilesCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:Compile.Instance}" Executed="OnCompileCommand" CanExecute="HaveCurrentProject"/>
+        <CommandBinding Command="{StaticResource CompileCurrentFileCommand}" Executed="OnCompileCurrentFileCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:NewProject.Instance}" Executed="OnNewProjectCommand"/>
+        <CommandBinding Command="{StaticResource OpenProject}" Executed="OnOpenProjectCommand"/>
+        <CommandBinding Command="{x:Static UICommands:CloseCurrentTab.Instance}" Executed="OnCloseCurrentTabCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:CloseAllFiles.Instance}" Executed="OnCloseAllFilesCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:CloseProject.Instance}" Executed="OnCloseProjectCommand" CanExecute="HaveCurrentProject"/>
+        <CommandBinding Command="{StaticResource ExitCommand}" Executed="OnExitCommand"/>
+
+        <CommandBinding Command="{x:Static UICommands:Rename.Instance}" Executed="OnRenameCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:Move.Instance}" Executed="OnMoveCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:NewCopy.Instance}" Executed="OnNewCopyCommand" CanExecute="HaveCurrentFile"/>
+
+        <CommandBinding Command="{x:Static UICommands:NewVersion.Instance}" Executed="OnNewVersionCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{x:Static UICommands:GoToVersion.Instance}" Executed="OnGoToVersionCommand" CanExecute="HaveCurrentFile"/>
+
+        <CommandBinding Command="{x:Static UICommands:BuildProject.Instance}" Executed="OnBuildProjectCommand" />
+        <CommandBinding Command="{x:Static UICommands:AddExistingFile.Instance}" Executed="OnAddExistingFileCommand" CanExecute="HaveCurrentProject"/>
+        <CommandBinding Command="{x:Static UICommands:AddNewFile.Instance}" Executed="OnAddNewFileCommand" CanExecute="HaveCurrentProject"/>
+        <CommandBinding Command="{x:Static UICommands:SaveProject.Instance}" Executed="OnSaveProjectCommand" />
+        <CommandBinding Command="{x:Static UICommands:ShowSettings.Instance}" Executed="OnShowSettingsCommand"/>
+
+        <CommandBinding Command="{StaticResource ShowCodeCommand}" Executed="OnShowCodeCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{StaticResource ShowCodeCheckboxesCommand}" Executed="OnShowCodeCheckboxesCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{StaticResource ShowCodeCommentsCommand}" Executed="OnShowCodeCommentsCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{StaticResource ShowErrorsCommand}" Executed="OnShowErrorsCommand"/>
+        <CommandBinding Command="{StaticResource ShowSolutionExplorerCommand}" Executed="OnShowSolutionExplorerCommand"/>
+        <CommandBinding Command="{StaticResource BookmarksCommand}" Executed="OnBookmarksCommand" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{StaticResource ColorsCommand}" CanExecute="HaveCurrentFile"/>
+        <CommandBinding Command="{StaticResource ShowContentsCommand}" Executed="OnShowContentsCommand"/>
+
+        <CommandBinding Command="{StaticResource ShowHotkeysCommand}" Executed="OnShowHotkeysCommand"/>
+        <CommandBinding Command="Help" Executed="OnHelpCommand"/>
+        <!--<CommandBinding Command="{StaticResource HideStatusPopupCommand}" Executed="OnHideStatusPopupCommand"/>-->
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="UICommands:Compile.Instance" />
+        <KeyBinding Key="F6" Command="{StaticResource CompileCurrentFileCommand}" />
+        <KeyBinding Key="N" Modifiers="Control+Shift" Command="UICommands:NewProject.Instance" />
+        <KeyBinding Key="O" Modifiers="Control+Shift" Command="{StaticResource OpenProject}" />
+        <KeyBinding Key="F4" Modifiers="Control" Command="UICommands:CloseCurrentTab.Instance" />
+
+        <KeyBinding Key="N" Modifiers="Control" Command="UICommands:AddNewFile.Instance" />
+        <KeyBinding Key="O" Modifiers="Control" Command="UICommands:AddExistingFile.Instance" />
+        <KeyBinding Key="S" Modifiers="Control" Command="UICommands:SaveCurrentFile.Instance" />
+        <KeyBinding Key="S" Modifiers="Control+Shift" Command="UICommands:SaveAllFiles.Instance" />
+
+        <KeyBinding Key="F5" Modifiers="Control" Command="{StaticResource ShowSolutionExplorerCommand}"/>
+        <KeyBinding Key="F6" Modifiers="Control" Command="{StaticResource ShowCodeCheckboxesCommand}"/>
+        <KeyBinding Key="F7" Modifiers="Control" Command="{StaticResource ShowCodeCommand}"/>
+        <KeyBinding Key="F8" Modifiers="Control" Command="{StaticResource ShowCodeCommentsCommand}"/>
+        <KeyBinding Key="F9" Modifiers="Control" Command="{StaticResource ShowErrorsCommand}"/>
+        <KeyBinding Key="F10" Modifiers="Control" Command="{StaticResource ShowContentsCommand}"/>
+        <KeyBinding Key="F12" Modifiers="Control" Command="{StaticResource ShowHotkeysCommand}"/>
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23" />
+            <!-- СТАТУСНАЯ СТРОКА -->
+            <RowDefinition Height="23" />
+            <!-- ВЕРХНЕЕ МЕНЮ -->
+            <RowDefinition Height="Auto" />
+            <!-- ПАНЕЛЬ ИНСТРУМЕНТОВ  -->
+            <RowDefinition Height="*" />
+            <!-- ОСНОВНАЯ ОБЛАСТЬ -->
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <CollectionViewSource x:Key="FilesList" x:Name="FilesList" Source="{Binding ElementName=codeEditor, Path=OpenedFiles}" />
+            <Translator:CurrentCheckConverter x:Key="CurrentCheckConverter"/>
+        </Grid.Resources>
+
+        <!-- СТАТУСНАЯ СТРОКА -->
+        <Translator:StatusBar x:Name="StatusPanel" Grid.ColumnSpan="2"/>
+
+        <!-- ВЕРХНЕЕ МЕНЮ -->
+        <Menu Grid.Row="1" HorizontalAlignment="Stretch" x:Name="menu1" VerticalAlignment="Stretch" Grid.ColumnSpan="2" IsMainMenu="True">
+            <Menu.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1" >
+                    <GradientStop Color="#FFEEEEEE" Offset="0" />
+                    <GradientStop Color="#FFDFDCDC" Offset="1.0" />
+                </LinearGradientBrush>
+            </Menu.Background>
+
+            <!-- FILE -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_FileT]}">
+                <!-- NEW PROJECT -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_NewProject]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_NewProjectT]}"
+                                      Command="UICommands:NewProject.Instance" InputGestureText="Ctrl+Shift+N">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/NewProject.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+
+                <!-- OPEN PROJECT -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_OpenProject]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_OpenProjectT]}"
+                                      Command="{StaticResource OpenProject}" InputGestureText="Ctrl+Shift+O">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/OpenProject.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+                <Separator/>
+
+                <!-- NEW FILE -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_NewFile]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_NewFileT]}"
+                                      Command="UICommands:AddNewFile.Instance"
+                                      InputGestureText="Ctrl+N">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/NewFile.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+
+                <!-- ADD EXISTING FILE -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_AddExistingFile]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_AddExistingFileT]}"
+                                      Command="UICommands:AddExistingFile.Instance" InputGestureText="Ctrl+O">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/OpenFile.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+                <Separator/>
+
+                <!-- CLOSE: -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Close]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CloseT]}" 
+                                      Command="UICommands:CloseCurrentTab.Instance"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CloseAllFiles]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CloseAllFilesT]}" 
+                                      Command="UICommands:CloseAllFiles.Instance"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CloseProject]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CloseProjectT]}"
+                                      Command="UICommands:CloseProject.Instance"/>
+                <Separator/>
+
+                <!-- RENAME/REMOVE/COPY-->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_Rename]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_RenameT]}"
+                                      Command="UICommands:Rename.Instance"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_Move]}"  
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_MoveT]}"  
+                                      Command="UICommands:Move.Instance"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_NewCopy]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_NewCopyT]}" 
+                                      Command="UICommands:NewCopy.Instance"/>
+                <Separator/>
+
+                <!-- VERSIONS -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_NewVersion]}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_NewVersionT]}" 
+                                      Command="UICommands:NewVersion.Instance"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_GoToVersion]}"  
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_GoToVersionT]}"  
+                                      Command="UICommands:GoToVersion.Instance"/>
+                <Separator/>
+
+                <!--RECENT PROJECTS -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_RecentProjects]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_File_RecentProjectsT]}"
+                                      ItemsSource="{Binding Source={StaticResource IDEState}, Path=RecentProjects}">
+                    <Translator:EMenuItem.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}">
+                            <EventSetter Event="Click" Handler="MenuRecentPeoject_Clicked"/>
+                        </Style>
+                    </Translator:EMenuItem.ItemContainerStyle>
+                </Translator:EMenuItem>
+
+                <Separator/>
+
+                <!-- SAVE -->
+                <!--<Translator:EMenuItem Header="{Binding Source={StaticResource LocString}, Path=Dict.Menu_Save}"/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocString}, Path=Dict.Menu_SaveAll}" />-->
+
+                <!-- EXIT -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Exit]}" Command="{StaticResource ExitCommand}" 
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_ExitT]}"
+                                      InputGestureText="Alt+F4"/>
+            </Translator:EMenuItem>
+            <!-- / FILE -->
+
+            <!-- EDIT -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_EditT]}">
+                <!-- CUT -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_Cut]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_CutT]}"
+                                      Command="Cut">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/Cut.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+
+                <!-- COPY -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_Copy]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_CopyT]}" Command="Copy">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/Copy.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+
+                <!-- PASTE -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_Paste]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Edit_PasteT]}" Command="Paste">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/Paste.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+            </Translator:EMenuItem>
+
+            <!-- VIEW -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_ViewT]}">
+                <!-- SOLUTION EXPLORER -->
+                <Translator:EMenuItem Command="{StaticResource ShowSolutionExplorerCommand}" 
+                                      InputGestureText="Ctrl+F5"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_SolutionExplorer]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_SolutionExplorerT]}"/>
+
+                <!-- EDITOR: CHECKBOXES -->
+                <Translator:EMenuItem Command="{StaticResource ShowCodeCheckboxesCommand}" 
+                                      InputGestureText="Ctrl+F6"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeCheckboxes]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeCheckboxesT]}"/>
+
+                <!-- EDITOR: CODE -->
+                <Translator:EMenuItem Command="{StaticResource ShowCodeCommand}" 
+                                      InputGestureText="Ctrl+F7"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Code]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeT]}"/>
+
+                <!-- EDITOR: COMMENTS -->
+                <Translator:EMenuItem Command="{StaticResource ShowCodeCommentsCommand}" 
+                                      InputGestureText="Ctrl+F8"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeComments]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeCommentsT]}"/>
+
+                <!-- ERRORS -->
+                <Translator:EMenuItem Command="{StaticResource ShowErrorsCommand}" 
+                                      InputGestureText="Ctrl+F9"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Errors]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_ErrorsT]}"/>
+
+                <!-- CONTETNTS -->
+                <Translator:EMenuItem Command="{StaticResource ShowContentsCommand}" 
+                                      InputGestureText="Ctrl+F10"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Contents]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_ContentsT]}"/>
+
+                <!-- HOTKEYS -->
+                <Separator/>
+                <Translator:EMenuItem Command="{StaticResource ShowHotkeysCommand}" 
+                                      InputGestureText="Ctrl+F12"
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Hotkeys]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_HotkeysT]}"/>
+            </Translator:EMenuItem>
+            <!-- / VIEW -->
+
+            <!-- COMPILE -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Compile]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_CompileT]}">
+
+                <!-- COMPILE PROJECT -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Compile_Project]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Compile_ProjectT]}"
+                                      InputGestureText="F5" Command="UICommands:Compile.Instance">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/Compile.ico" />
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+
+                <!-- COMPILE CURRENT FILE -->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Compile_CurrentFile]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Compile_CurrentFileT]}"
+                                      InputGestureText="F6" Command="{StaticResource CompileCurrentFileCommand}"/>
+            </Translator:EMenuItem>
+            <!-- / COMPILE -->
+
+            <!-- TOOLS -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Tools]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_ToolsT]}">
+                <!-- SETTINGS -->
+                <Translator:EMenuItem Command="UICommands:ShowSettings.Instance" 
+                                      Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Tools_Settings]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Tools_SettingsT]}">
+                    <Translator:EMenuItem.Icon>
+                        <Image Source="Resources/settings.ico"/>
+                    </Translator:EMenuItem.Icon>
+                </Translator:EMenuItem>
+            </Translator:EMenuItem>
+
+            <!--<Translator:EMenuItem Header="{Binding Source={StaticResource LocString}, Path=Dict[Menu_Service]}"/>-->
+
+            <!-- WINDOW -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Window]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_WindowT]}">
+                <Translator:EMenuItem.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Source={StaticResource FilesList}}"/>
+                        <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Window_Windows]}"
+                                              Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Window_WindowsT]}" 
+                                              Click="MenuWindows_Click"/>
+                    </CompositeCollection>
+                </Translator:EMenuItem.ItemsSource>
+                <Translator:EMenuItem.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}"/>
+                    </DataTemplate>
+                </Translator:EMenuItem.ItemTemplate>
+                <Translator:EMenuItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type MenuItem}">
+                        <EventSetter Event="Click" Handler="WindowItem_Click"/>
+                        <Style.Triggers>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource CurrentCheckConverter}">
+                                        <Binding ElementName="codeEditor" Path="CurrentCodeFile"/>
+                                        <Binding/>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="IsChecked" Value="True"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Translator:EMenuItem.ItemContainerStyle>
+            </Translator:EMenuItem>
+
+            <!-- HELP -->
+            <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help]}"
+                                  Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_HelpT]}">
+                <!--<Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_ShowHelp]}" Command="Help"/>
+                <Separator/>-->
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_Help]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_HelpT]}"
+                                      Command="Help"/>
+                <Separator/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_StartPage]}"
+                                      Hover="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_StartPageT]}"
+                                      Click="MenuShowStartPage_OnClick"/>
+                <!--<Separator/>
+                <Translator:EMenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_Help_About]}" />-->
+            </Translator:EMenuItem>
+        </Menu>
+
+        <!-- ОССНОВНАЯ ОБЛАСТЬ -->
+        <Grid Grid.Row="3" HorizontalAlignment="Stretch" x:Name="grid1" VerticalAlignment="Stretch" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <!-- Обозреватель преоктов -->
+                <ColumnDefinition Width="{Binding Source={StaticResource IDEState}, Path=ProjectExplorerColumn_Width, Mode=OneTime}" 
+                                  MinWidth="80" x:Name="ProjectExplorerColumn" MaxWidth="1500"/>
+
+                <!-- Код -->
+                <ColumnDefinition Width="*" x:Name="CodeColumn" MinWidth="90"/>
+
+                <!-- Оглавление -->
+                <ColumnDefinition Width="{Binding Source={StaticResource IDEState}, Path=ContentsColumn_Width, Mode=OneTime}" 
+                                  MinWidth="80" MaxWidth="1500" x:Name="ContentsColumn"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Translator:ContentsControl x:Key="ContentsControl"/>
+                <Translator:ErrorsListControl x:Key="ErrorsListControl"/>
+                <Translator:ProjectExplorerControl x:Key="ProjectExplorerControl"/>
+                <!--<Translator:BookmarksControl x:Key="BookmarksControl"/>-->
+            </Grid.Resources>
+
+            <!-- PROJECT EXPLORER -->
+            <Translator:CloseablePanel Header="{Binding Source={StaticResource LocalString}, Path=Dict[Header_ProjectExplorer]}"
+                                       Content="{StaticResource ProjectExplorerControl}"
+                                       x:Name="projectExplorerControlPanel" MainObject="{Binding Source={StaticResource ProjectExplorerControl}, Path=MainObject}"
+                                       Column="{Binding ElementName=ProjectExplorerColumn}"
+                                       Splitter="{Binding ElementName=ProjectExplorerSplitter}"/>
+
+            <GridSplitter Grid.Row="0" Grid.RowSpan="2" Width="8" x:Name="ProjectExplorerSplitter" Focusable="False"
+                          DragCompleted="Splitter_OnDragCompleted" DragStarted="Splitter_OnDragStarted">
+                <GridSplitter.Background>
+                    <SolidColorBrush />
+                </GridSplitter.Background>
+            </GridSplitter>
+
+            <!-- COLUMN 2: CODE AND ERRORS -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="40" x:Name="CodeRow"/>
+                    <RowDefinition Height="{Binding Source={StaticResource IDEState}, Path=ErrorsRow_Height, Mode=OneTime}" 
+                                   MinHeight="80" x:Name="ErrorsRow"/>
+                    <!--<RowDefinition Height="{Binding Source={StaticResource IDEState}, Path=BookmarksRow_Height, Mode=OneTime}" 
+                                   MinHeight="50" x:Name="BookmarksRow"/>-->
+                </Grid.RowDefinitions>
+
+                <!-- CODE -->
+                <Translator:CodeEditor x:Name="codeEditor" Grid.Row="0"/>
+
+                <!-- CODE & ERRORS -->
+                <GridSplitter Height="5" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Focusable="False"
+                              x:Name="ErrorsSplitter" DragCompleted="Splitter_OnDragCompleted" DragStarted="Splitter_OnDragStarted">
+                    <GridSplitter.Background>
+                        <SolidColorBrush />
+                    </GridSplitter.Background>
+                </GridSplitter>
+
+                <!-- ERRORS -->
+                <Translator:CloseablePanel Grid.Row="1" Header="{Binding Source={StaticResource LocalString}, Path=Dict[Header_Errors]}"
+                                           Content="{StaticResource ErrorsListControl}"
+                                           x:Name="errorsListControlPanel" MainObject="{Binding Source={StaticResource ErrorsListControl}, Path=MainObject}"
+                                           Row="{Binding ElementName=ErrorsRow}"
+                                           Splitter="{Binding ElementName=ErrorsSplitter}"/>
+
+                <!-- ERRORS & BOOKMARKS -->
+                <!--<GridSplitter Height="5" ResizeDirection="Rows" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="1"
+                              ResizeBehavior="PreviousAndNext"
+                              x:Name="BookmarksSplitter" DragCompleted="Splitter_OnDragCompleted" DragStarted="Splitter_OnDragStarted">
+                    <GridSplitter.Background>
+                        <SolidColorBrush />
+                    </GridSplitter.Background>
+                </GridSplitter>-->
+
+                <!-- BOOKMARKS -->
+                <!--<Translator:CloseablePanel Grid.Row="2" Header="{Binding Source={StaticResource LocalString}, Path=Dict[Header_Bookmarks]}"
+                                           Content="{StaticResource BookmarksControl}"
+                                           x:Name="bookmarksControlPanel" MainObject="{Binding Source={StaticResource BookmarksControl}, Path=MainObject}"
+                                           Row="{Binding ElementName=BookmarksRow}"
+                                           Splitter="{Binding ElementName=BookmarksSplitter}"/>-->
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Width="8" ResizeDirection="Columns" x:Name="ContentsSplitter" Focusable="False"
+                          DragCompleted="Splitter_OnDragCompleted" DragStarted="Splitter_OnDragStarted">
+                <GridSplitter.Background>
+                    <SolidColorBrush />
+                </GridSplitter.Background>
+            </GridSplitter>
+
+            <!-- CONTENTS WINDOW -->
+            <Translator:CloseablePanel Grid.Column="2" Header="{Binding Source={StaticResource LocalString}, Path=Dict[Header_Contents]}"
+                                       Content="{StaticResource ContentsControl}"
+                                       x:Name="contentsControlPanel" MainObject="{Binding Source={StaticResource ContentsControl}, Path=MainObject}"
+                                       Column="{Binding ElementName=ContentsColumn}"
+                                       Splitter="{Binding ElementName=ContentsSplitter}"/>
+
+        </Grid>
+
+        <!-- ВЕРХНЕЕ МЕНЮ -->
+        <!-- Идет после осноавной области, потому что для ее инициализации над чтоб было создано много чего -->
+        <ToolBarPanel Grid.Row="2" Background="#FFDFDCDC">
+            <ToolBar>
+                <ToolBar.Background>Transparent</ToolBar.Background>
+                <Button Command="UICommands:NewProject.Instance" 
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_NewProject_Tooltip]}">
+                    <Image Source="Resources\NewProject.ico" />
+                </Button>
+                <Button Command="{StaticResource OpenProject}"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_OpenProject_Tooltip]}">
+                    <Image Source="Resources\OpenProject.ico" />
+                </Button>
+                <Separator/>
+                <Button Command="UICommands:AddNewFile.Instance"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_NewFile_Tooltip]}" ToolTipService.ShowOnDisabled="True">
+                    <Image Source="Resources\NewFile.ico" />
+                </Button>
+                <Button Command="UICommands:AddExistingFile.Instance"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_AddExistingFile_Tooltip]}" ToolTipService.ShowOnDisabled="True">
+                    <Image Source="Resources\OpenFile.ico" />
+                </Button>
+                <Separator/>
+                <Button Command="UICommands:SaveCurrentFile.Instance"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_SaveCurrentFile_Tooltip]}" ToolTipService.ShowOnDisabled="True">
+                    <Image Source="Resources\save.ico" ToolTipService.ShowOnDisabled="True"/>
+                </Button>
+                <Button Command="UICommands:SaveAllFiles.Instance"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_SaveAllFiles_Tooltip]}" ToolTipService.ShowOnDisabled="True">
+                    <Image Source="Resources\save-all.ico"  ToolTipService.ShowOnDisabled="True"/>
+                </Button>
+                <Separator/>
+
+                <Button Command="UICommands:Compile.Instance"
+                        ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_Compile]}" ToolTipService.ShowOnDisabled="True">
+                    <Image Source="Resources/Compile.ico" />
+                </Button>
+                <Separator/>
+
+                <xctk:SplitButton x:Name="ColorButton"  Command="{StaticResource ColorsCommand}" 
+                                  ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_Colors]}"
+                                  ToolTipService.ShowOnDisabled="True"
+                                  Closed="ColorButton_MenuClosed" Click="ColorButton_Click">
+                    <xctk:SplitButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Source={StaticResource LocalString}, Path=Dict[Button_Select]}"/>
+                            <Rectangle Fill="Transparent" Margin="8,0,0,0"  Width="15" Height="15" x:Name="CurrentColor"/>
+                        </StackPanel>
+                    </xctk:SplitButton.Content>
+                    <xctk:SplitButton.DropDownContent>
+                        <Translator:ColorDropDownControl ParentButton="{x:Reference ColorButton}" x:Name="colorsDropDownControl"/>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+                <Separator/>
+
+                <!-- ЗАКЛАДКИ -->
+                <xctk:SplitButton x:Name="bookmarksButton" Command="{StaticResource BookmarksCommand}" 
+                                  ToolTip="{Binding Source={StaticResource LocalString}, Path=Dict[Button_Bookmarks]}"
+                                  ToolTipService.ShowOnDisabled="True">
+                    <xctk:SplitButton.Content>
+                        <Image Source="Resources/favourite.ico"/>
+                    </xctk:SplitButton.Content>
+                    <xctk:SplitButton.DropDownContent>
+                        <Translator:BookmarksDropDownControl ParentButton="{x:Reference bookmarksButton}" x:Name="bookmarksDropDownControl"/>
+                    </xctk:SplitButton.DropDownContent>
+                </xctk:SplitButton>
+            </ToolBar>
+        </ToolBarPanel>
+    </Grid>
+</Window>

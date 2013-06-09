@@ -1,0 +1,231 @@
+﻿<UserControl x:Class="Translator.FileTabControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Translator="clr-namespace:Translator" mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="487" Name="userControl111" Focusable="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- CONTENT -->
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Name="scrollViewer" 
+                      PreviewMouseWheel="scrollViewer_PreviewMouseWheel" Focusable="True"
+                      MouseLeftButtonUp="EmptySpace_OnMouseLeftButtonUp">
+            <ItemsControl ItemsSource="{Binding ElementName=userControl111, Path=Elements}"  Focusable="True" x:Name="itemsControl">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:Name="grid" MouseLeftButtonDown="Tab_MouseLeftButtonDown" VerticalAlignment="Stretch"
+                              ToolTip="{Binding Path}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="14"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Translator:FileNameConverter x:Key="fileNameConverter"/>
+                                <Translator:CurrentSelectionConverter x:Key="currentSelectionConverter"/>
+                                <Translator:Converter0 x:Key="converter0"/>
+                                <Translator:Converter1 x:Key="converter1"/>
+                                <Translator:Converter2 x:Key="converter2"/>
+                                <Translator:Converter3 x:Key="converter3"/>
+                                <Translator:Converter4 x:Key="converter4"/>
+
+                                <Style TargetType="Grid">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Value="0">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter0}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Background" Value="{Binding ElementName=userControl111, Path=ActiveFocusTabBrushB}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="1">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter1}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Background" Value="{Binding ElementName=userControl111, Path=ActiveNotFocusTabBrush}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="2">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter2}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Background" Value="{Binding ElementName=userControl111, Path=NotActiveTabBrush}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="3">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter3}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Background" Value="{Binding ElementName=userControl111, Path=MouseHoverTabBrush}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Value="4">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter4}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Background" Value="{Binding ElementName=userControl111, Path=MouseHoverTabBrushNoFocus}"/>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
+
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource fileNameConverter}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="IsChanged"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                                <TextBlock.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Value="0">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource converter0}">
+                                                        <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                        <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                        <Binding/>
+                                                        <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Foreground" Value="{Binding ElementName=userControl111, Path=ActiveFocusTabBrushF}"/>
+                                            </DataTrigger>
+                                                
+                                            <DataTrigger Value="3">
+                                            <DataTrigger.Binding>
+                                                <MultiBinding Converter="{StaticResource converter3}">
+                                                    <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                    <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                    <Binding/>
+                                                    <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                </MultiBinding>
+                                            </DataTrigger.Binding>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Resources>
+                            </TextBlock>
+
+                            <!-- КНОПКА ЗАКРЫТИЯ -->
+                            <Image Grid.Column="3" Width="13" Height="13">
+                                <Image.Style>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Source" Value="Resources/close_blue.png"/>
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <EventSetter Event="MouseLeftButtonDown" Handler="closeTextBlock_Click"/>
+
+                                        <Style.Triggers>
+                                            <DataTrigger Value="0">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource converter0}">
+                                                        <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                        <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                        <Binding/>
+                                                        <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Value="1">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource converter1}">
+                                                        <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                        <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                        <Binding/>
+                                                        <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Source" Value="Resources/close_black.png"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Value="3">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource converter3}">
+                                                        <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                        <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                        <Binding/>
+                                                        <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Source" Value="Resources/close_blue.png"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Value="4">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource converter4}">
+                                                        <Binding ElementName="grid" Path="IsMouseOver"/>
+                                                        <Binding ElementName="userControl111" Path="CurrentCodeFile"/>
+                                                        <Binding/>
+                                                        <Binding ElementName="userControl111" Path="_CodeEditorView.IsEditorFocused"/>
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Source" Value="Resources/close_black.png"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Source" Value="Resources/close_hover.png"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
+                            </Image>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- SCROLL BUTTOSS -->
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <RepeatButton Content="&lt;" Height="20" Width="20" Padding="0" Margin="0,0,3,0" Click="ButtonLeft_Click" />
+            <RepeatButton Content="&gt;" Height="20" Width="20" Padding="0" Click="ButtonRight_Click" Margin="0,0,3,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>

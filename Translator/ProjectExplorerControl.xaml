@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="Translator.ProjectExplorerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Translator="clr-namespace:Translator"
+             xmlns:UICommands="clr-namespace:Translator.UICommands" Name="userControl1"
+             mc:Ignorable="d" d:DesignHeight="329" d:DesignWidth="179">
+    <UserControl.Resources>
+        <RoutedUICommand x:Key="DeleteCommand"/>
+        <ContextMenu x:Key="StandartContextMenu">
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_OpenFile]}" Click="MenuItem_Open_Click"/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Rename]}" Click="MenuItem_Rename_Click"/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Move]}" Click="MenuItem_Move_Click"/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Copy]}" Click="MenuItem_Copy_Click"/>
+            <Separator/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_NewVer]}" Click="MenuItem_NewVer_Click"/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_GoToVer]}" Click="MenuItem_GoToVer_Click"/>
+            <Separator/>
+            <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Exclude]}" Click="MenuItem_Exclude_Click" />
+        </ContextMenu>
+
+        <!-- Обычный шаблон -->
+        <DataTemplate x:Key="Item">
+            <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource StandartContextMenu}">
+                <Image Source="Resources\CodeFile.ico"/>
+                <TextBlock Text="{Binding Path=Name}" x:Name="textBox" Padding="3"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Файл редактируют -->
+        <DataTemplate x:Key="EditableItem">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Resources\CodeFile.ico"/>
+                <TextBox Text="{Binding Path=Name}" LostFocus="TextBoxEditName_LostFocus" KeyDown="TextBoxEditName_KeyDown" Loaded="TextBoxEditName_Loaded"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Это файл активен в редакторе -->
+        <DataTemplate x:Key="CurrentEditorItemTemplate">
+            <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource StandartContextMenu}">
+                <Image Source="Resources\CodeFile.ico"/>
+                <TextBlock Text="{Binding Path=Name}" x:Name="textBox" Padding="3" FontWeight="Bold"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Это файл просто открыт в редакторе -->
+        <DataTemplate x:Key="OpenInEditorItemTemplate">
+            <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource StandartContextMenu}">
+                <Image Source="Resources\CodeFile.ico"/>
+                <TextBlock Text="{Binding Path=Name}" x:Name="textBox" Padding="3" Foreground="Brown"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{x:Static UICommands:RenameFileInProjectExplorer.Instance}" Executed="OnRenameFileInProjectExplorerCommand" CanExecute="HaveSelectedItem"/>
+        <CommandBinding Command="{StaticResource DeleteCommand}" Executed="OnDeleteFileCommand" CanExecute="HaveSelectedItem"/>
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding Key="F2" Command="UICommands:RenameFileInProjectExplorer.Instance" />
+        <KeyBinding Key="Delete" Command="{StaticResource DeleteCommand}"/>
+    </UserControl.InputBindings>
+    <Grid>
+        <!-- TREE -->
+        <TreeView Name="treeView1" BorderThickness="0" MouseLeftButtonDown="TreeView1_OnMouseLeftButtonDown">
+            <TreeView.Background>
+                <SolidColorBrush />
+            </TreeView.Background>
+            <TreeViewItem ItemsSource="{Binding}" IsExpanded="True" x:Name="parent" MouseDoubleClick="Parent_MouseDoubleClick"
+                          KeyDown="Parent_KeyDown"
+                          Header="{Binding ElementName=userControl1, Path=Current.Name, UpdateSourceTrigger=Explicit}">
+                <TreeViewItem.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Resources/CodeProject.ico"/>
+                            <TextBlock Margin="3,0,0,0" Text="{Binding}" FontWeight="Bold"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeViewItem.HeaderTemplate>
+                <TreeViewItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                         <!-- We have to select the item which is right-clicked on -->
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown"/>
+                        <EventSetter Event="Selected" Handler="Item_Selected"/>
+                        <Setter Property="ToolTip" Value="{Binding Path=Path}"/>
+                        <Setter Property="HeaderTemplate" Value="{StaticResource Item}"/>
+                    </Style>
+                </TreeViewItem.ItemContainerStyle>
+            </TreeViewItem>
+
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_BuildProject]}" 
+                              Command="UICommands:BuildProject.Instance"/>
+                    <Separator/>
+                    
+                    <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_SaveProject]}" 
+                              Command="UICommands:SaveProject.Instance"/>
+                    <Separator/>
+                    
+                    <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Add_NewFile]}" 
+                              Command="UICommands:AddNewFile.Instance"/>
+                    <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_Add_ExistFile]}"
+                              Command="UICommands:AddExistingFile.Instance"/>
+                    <Separator/>
+                    
+                    <MenuItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[ProjectMenu_ProjectSettings]}"
+                              Click="MenuItem_Click_Settings"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <!-- We have to select the item which is right-clicked on -->
+                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </Grid>
+</UserControl>

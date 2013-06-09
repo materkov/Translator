@@ -1,0 +1,341 @@
+﻿<Window x:Class="Translator.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:Translator="clr-namespace:Translator"
+        x:Name="window1"
+        Title="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Title]}" Height="354" Width="494" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" Loaded="window1_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl Margin="10">
+            <TabItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Lang]}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="100*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Lang]}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                            <ComboBox SelectedIndex="{Binding Source={StaticResource IDEState}, Path=CurrentLanguage, UpdateSourceTrigger=Explicit}" Grid.Column="2" Height="23" HorizontalAlignment="Left" Name="comboBox1" VerticalAlignment="Center" Width="152" Margin="0,14">
+                                <ComboBoxItem Content="ENG"/>
+                                <ComboBoxItem Content="RUS"/>
+                            </ComboBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_FavouriteDirGroup]}">
+                <!-- Favourite dirs -->
+                <Translator:FolderManagerControl x:Name="folderManagerControl" Margin="5"/>
+            </TabItem>
+            <TabItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Group]}">
+                <!-- Colors -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Headers -->
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Background]}"/>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Center" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Foreground]}"/>
+
+                        <!-- ERROR -->
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Error]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="1" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker1, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker1"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_ErrorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="1" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker11, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker11"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_ErrorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- SPECIAL ERROR -->
+                        <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_SpecialError]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="2" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker2, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker2"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_SpecialErrorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="2" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker22, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker22"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_SpecialErrorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- POPUP ERROR -->
+                        <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_PopupError]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="3" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker3, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker3"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_PopupErrorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="3" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker33, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker33"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_PopupErrorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- BOOKMARK COLOR -->
+                        <TextBlock Grid.Row="4" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Bookmark]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="4" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker4, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker4"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=BookmarkColorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="4" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker44, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker44"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=BookmarkColorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- FOCUSED HEADER -->
+                        <TextBlock Grid.Row="5" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_FocusedHeader]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="5" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker5, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker5"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=FocusedHeaderColorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="5" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker55, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker55"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=FocusedHeaderColorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- NOT FOCUSED HEADER -->
+                        <TextBlock Grid.Row="6" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_NotFocusedHeader]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="6" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker6, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker6"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=NotFocusedHeaderColorB, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <xctk:DropDownButton Grid.Column="2" Grid.Row="6" Height="23" Margin="10,0,10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker66, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker66"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=NotFocusedHeaderColorF, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+
+                        <!-- MAIN WINDIW BAKGROUND -->
+                        <TextBlock Grid.Row="7" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_WindowBackground]}" VerticalAlignment="Center" />
+                        <xctk:DropDownButton Grid.Column="1" Grid.Row="7" Height="23" Margin="10,0" >
+                            <xctk:DropDownButton.Content>
+                                <Rectangle Height="15" Width="50">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding ElementName=colorPicker7, Path=SelectedColor}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </xctk:DropDownButton.Content>
+                            <xctk:DropDownButton.DropDownContent>
+                                <xctk:ColorCanvas x:Name="colorPicker7"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=MainWindowBackgroundColor, UpdateSourceTrigger=Explicit}"/>
+                            </xctk:DropDownButton.DropDownContent>
+                        </xctk:DropDownButton>
+                    </Grid>
+            </TabItem>
+
+            <TabItem Header="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_ColorEditor_Group]}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Headers -->
+                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Background]}"/>
+                    
+                    <!--
+                    <TextBlock Grid.Column="2" HorizontalAlignment="Center" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Color_Foreground]}"/>
+                    -->
+
+                    <!-- CURRENT LINE -->
+                    <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_ColorEditor_Line]}" VerticalAlignment="Center" />
+                    <xctk:DropDownButton Grid.Column="1" Grid.Row="1" Height="23" Margin="10,0" >
+                        <xctk:DropDownButton.Content>
+                            <Rectangle Height="15" Width="50">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding ElementName=colorPicker100, Path=SelectedColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </xctk:DropDownButton.Content>
+                        <xctk:DropDownButton.DropDownContent>
+                            <xctk:ColorCanvas x:Name="colorPicker100"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_CurrentLine, UpdateSourceTrigger=Explicit}"/>
+                        </xctk:DropDownButton.DropDownContent>
+                    </xctk:DropDownButton>
+
+                    <!-- MOUSE HOVER ON TAB, FOCUSED -->
+                    <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_ColorEditor_MouseHoverFocused]}" VerticalAlignment="Center" />
+                    <xctk:DropDownButton Grid.Column="1" Grid.Row="2" Height="23" Margin="10,0" >
+                        <xctk:DropDownButton.Content>
+                            <Rectangle Height="15" Width="50">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding ElementName=colorPicker101, Path=SelectedColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </xctk:DropDownButton.Content>
+                        <xctk:DropDownButton.DropDownContent>
+                            <xctk:ColorCanvas x:Name="colorPicker101"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_MouseHoverTabFocused, UpdateSourceTrigger=Explicit}"/>
+                        </xctk:DropDownButton.DropDownContent>
+                    </xctk:DropDownButton>
+
+                    <!-- MOUSE HOVER ON TAB,    NOT FOCUSED -->
+                    <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_ColorEditor_MouseHoverNotFocused]}" VerticalAlignment="Center" />
+                    <xctk:DropDownButton Grid.Column="1" Grid.Row="3" Height="23" Margin="10,0" >
+                        <xctk:DropDownButton.Content>
+                            <Rectangle Height="15" Width="50">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding ElementName=colorPicker102, Path=SelectedColor}" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </xctk:DropDownButton.Content>
+                        <xctk:DropDownButton.DropDownContent>
+                            <xctk:ColorCanvas x:Name="colorPicker102"
+                                                      SelectedColor="{Binding Source={StaticResource IDEState}, Path=EditorColor_MouseHoverTabNotFocused, UpdateSourceTrigger=Explicit}"/>
+                        </xctk:DropDownButton.DropDownContent>
+                    </xctk:DropDownButton>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,12,12">
+            <Button Content="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_ToDefault]}" Margin="0,0,50,0" Height="23" Name="button3" Width="200" Click="buttonToDefault_Click" />
+            <Button Content="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_OK]}" Height="23" Name="button1" Width="75" IsDefault="True" Click="button1_Click" />
+            <Button Content="{Binding Source={StaticResource LocalString}, Path=Dict[SettingsWindow_Cancel]}" Margin="12,0,0,0" Height="23" Name="button2" Width="75" IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

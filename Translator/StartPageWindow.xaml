@@ -1,0 +1,55 @@
+﻿<Window x:Class="Translator.StartPageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:translator="clr-namespace:Translator"
+        Title="{Binding Source={StaticResource LocalString}, Path=Dict[StartPage_Title]}" 
+        Height="300" Width="610" WindowStartupLocation="CenterOwner" ResizeMode="CanResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="222*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Grid Margin="12,0,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="{Binding Source={StaticResource LocalString}, Path=Dict[StartPage_RecentProjects]}">
+                <Grid>
+                    <ListView Margin="5" x:Name="listView"
+                              ItemsSource="{Binding Source={StaticResource IDEState}, Path=RecentProjects}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <translator:CollapsedTextBlock FullText="{Binding}" ToolTip="{Binding}" RenderWidth="{Binding ElementName=listView, Path=ActualWidth}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="MouseDoubleClick" Handler="LastProject_DoubleCLick"/>
+                                <EventSetter Event="KeyDown" Handler="LastProject_KeyDown"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="{Binding Source={StaticResource LocalString}, Path=Dict[StartPage_Hint]}" Grid.Column="1" Loaded="HelpGroupBoxLoaded">
+                <Grid>
+                    <RichTextBox Margin="5" Name="richTextBox1" IsReadOnly="True" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="12,12,12,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Content="{Binding Source={StaticResource LocalString}, Path=Dict[StartPage_ShowNext]}" VerticalAlignment="Center" 
+                      IsChecked="{Binding Source={StaticResource IDEState}, Path=ShowStartPage}" />
+            <Button Grid.Column="2" HorizontalAlignment="Right" Width="80" Height="23" 
+                    Content="{Binding Source={StaticResource LocalString}, Path=Dict[StartPage_Close]}"
+                    IsDefault="True" Click="Button_Click" IsCancel="True" />
+        </Grid>
+    </Grid>
+</Window>

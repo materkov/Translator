@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="File">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Versions">
+          <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+              <xs:element name="Version">
+                <xs:complexType>
+                  <xs:sequence>
+
+                    <xs:element name="Text">
+                      <xs:complexType>
+                        <xs:attribute name="Hash" type="xs:int" use="required" />
+                        <xs:attribute name="Name" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="Checkboxes">
+                      <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="unbounded" name="Checkbox">
+                            <xs:complexType>
+                              <xs:attribute name="Offset" type="xs:int" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="Comments">
+                      <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="unbounded" name="Comment">
+                            <xs:complexType>
+                              <xs:attribute name="Offset" type="xs:int" use="required" />
+                              <xs:attribute name="Text" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="ColorSegments">
+                      <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="unbounded" name="ColorSegment">
+                            <xs:complexType>
+                              <xs:attribute name="Start" type="xs:int" use="required" />
+                              <xs:attribute name="End" type="xs:int" use="required" />
+                              <xs:attribute name="Color" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="Bookmarks">
+                      <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="unbounded" name="Bookmark">
+                            <xs:complexType>
+                              <xs:attribute name="Offset" type="xs:int" use="required" />
+                              <xs:attribute name="Key" type="xs:int" use="required" />
+                              <xs:attribute name="Mark" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+
+                  </xs:sequence>
+                  <xs:attribute name="Key" type="xs:string" use="required" />
+                  <xs:attribute name="Mark" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

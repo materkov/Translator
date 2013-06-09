@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Translator.ColorDropDownControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" IsVisibleChanged="UserControl_IsVisibleChanged">
+    <Grid Margin="3">
+        <Grid.Resources>
+            <GridLength x:Key="CellSize">30</GridLength>
+            <Style x:Key="BoxStyle" TargetType="Grid">
+                <Setter Property="Background" Value="Transparent"/>
+                <EventSetter Event="MouseLeftButtonDown" Handler="Color_OnClick"/>
+                
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="Gray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource CellSize}"/>
+            <ColumnDefinition Width="{StaticResource CellSize}"/>
+            <ColumnDefinition Width="{StaticResource CellSize}"/>
+            <ColumnDefinition Width="{StaticResource CellSize}"/>
+            <ColumnDefinition Width="{StaticResource CellSize}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource CellSize}"/>
+            <RowDefinition Height="{StaticResource CellSize}"/>
+            <RowDefinition Height="{StaticResource CellSize}"/>
+            <RowDefinition Height="{StaticResource CellSize}"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="#FFCCCC00"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="1" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Lime"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="2" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Cyan"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="3" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Magenta"/>
+        </Grid>
+        <Grid Grid.Row="0" Grid.Column="4" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="#FF5959FF"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Red"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="#FFF49A64"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Teal"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="3" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Green"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="4" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2"  Fill="Purple"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="0" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Maroon"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Olive"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="2" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Gray"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="3" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Silver"/>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="4" Style="{StaticResource BoxStyle}">
+            <Rectangle Margin="2" Fill="Black"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="5" Style="{StaticResource BoxStyle}">
+            <TextBlock Margin="2"  Text="Нет цвета" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        </Grid>
+    </Grid>
+</UserControl>

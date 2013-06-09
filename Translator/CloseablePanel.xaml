@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="Translator.CloseablePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Focusable="True"
+             x:Name="userControl1" BorderThickness="2,0,2,2"
+             d:DesignHeight="66" d:DesignWidth="300">
+    <UserControl.BorderBrush>
+        <MultiBinding Converter="{StaticResource borderBrushConverter}">
+            <Binding ElementName="userControl1" Path="IsKeyboardFocusWithin"/>
+            <Binding Source="{StaticResource IDEState}" Path="FocusedHeaderBrushB"/>
+            <Binding Source="{StaticResource IDEState}" Path="NotFocusedHeaderBrushB"/>
+        </MultiBinding>
+    </UserControl.BorderBrush>
+    <UserControl.Background>
+        <SolidColorBrush />
+    </UserControl.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="{Binding Source={StaticResource IDEState}, Path=NotFocusedHeaderBrushB}"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=userControl1, Path=IsKeyboardFocusWithin}" Value="True">
+                            <Setter Property="Background" Value="{Binding Source={StaticResource IDEState}, Path=FocusedHeaderBrushB}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="HeadetTextBlock" Margin="2,3,3,3" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{Binding Source={StaticResource IDEState}, Path=NotFocusedHeaderBrushF}"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=userControl1, Path=IsKeyboardFocusWithin}" Value="True">
+                                <Setter Property="Foreground" Value="{Binding Source={StaticResource IDEState}, Path=FocusedHeaderBrushF}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Image Grid.Column="1" Margin="2" Width="13" Height="13">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Source" Value="Resources/close_black.png"/>
+                        <EventSetter Event="MouseLeftButtonDown" Handler="HeaderCloseButton_Click"/>
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=userControl1, Path=IsKeyboardFocusWithin}" Value="True">
+                                <Setter Property="Source" Value="Resources/close_blue.png"/>
+                            </DataTrigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Source" Value="Resources/close_hover.png"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+        </Grid>
+
+        <!-- Основное содержимое -->
+        <ContentControl Grid.Row="1" x:Name="Presenter" Focusable="False" />
+    </Grid>
+</UserControl>

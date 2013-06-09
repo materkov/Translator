@@ -1,0 +1,166 @@
+﻿<Window x:Class="Translator.OpenFileWindowBase"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Translator="clr-namespace:Translator"
+        Name="userControl1" Width="900" Height="400" 
+        FocusManager.FocusedElement="{Binding ElementName=listView1}" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>                                          <!-- Каталоги -->
+            <ColumnDefinition Width="80*" MinWidth="410" x:Name="FilesColumn"/>      <!-- выбор файла -->
+            <ColumnDefinition Width="Auto" x:Name="PreviewColumnSplitter"/>          <!-- РАЗДЕЛИТЕЛЬ -->                          
+            <ColumnDefinition Width="35*" MinWidth="50" x:Name="PreviewColumn"/>    <!-- Предпросмотр -->
+        </Grid.ColumnDefinitions>
+
+        <Grid.Resources>
+            <Translator:CheckedToVisibilittyConverter x:Key="CheckedToVisibilittyConverter"/>
+        </Grid.Resources>
+            
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Путь -->
+            <TextBox Height="23" Grid.Column="0" Margin="0"
+                     Text="{Binding ElementName=userControl1, Path=Path, UpdateSourceTrigger=Explicit}"
+                     KeyDown="PathTextBox_KeyDown" HorizontalAlignment="Center"
+                     Width="{Binding ElementName=listView1, Path=ActualWidth}" TabIndex="1" />
+
+            <!-- Список файлов -->
+            <ListView VirtualizingStackPanel.IsVirtualizing="False" Margin="5" ItemsSource="{Binding ElementName=userControl1, Path=Files}" 
+                      HorizontalAlignment="Stretch" Name="listView1" VerticalAlignment="Stretch" Grid.Row="1" TabIndex="2">
+                <ListView.Resources>
+                    <Translator:FileTypeConverter x:Key="fileTypeConverter"/>
+                    <Translator:DateConverter x:Key="dateConverter"/>
+                    <Translator:SizeConverter x:Key="sizeConverter"/>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Width="170" Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Header_Name]}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image x:Name="img" Margin="0" Source="Resources\Folder.png"/>
+                                            <TextBlock Margin="3,0" Text="{Binding Path=Name}"/>
+                                        </StackPanel>
+
+                                        <DataTemplate.Triggers>
+                                            <!--<DataTrigger Binding="{Binding Path=FileType}" Value="Dir">
+                                                <Setter TargetName="img" Property="Source" Value="Folder.png"/>
+                                            </DataTrigger>-->
+
+                                            <DataTrigger Binding="{Binding Path=FileType}" Value="File">
+                                                <Setter TargetName="img" Property="Source" Value="Resources\New.png"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Path=FileType}" Value="Drive">
+                                                <Setter TargetName="img" Property="Source" Value="Resources\Drive.png"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Path=FileType}" Value="UpDir">
+                                                <Setter TargetName="img" Property="Visibility" Value="Hidden"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="115" Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Header_Changed]}" 
+                                            DisplayMemberBinding="{Binding Path=LastChanged, Converter={StaticResource dateConverter}}"/>
+                            <GridViewColumn Width="60" Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Header_Type]}" 
+                                            DisplayMemberBinding="{Binding Path=FileType, Converter={StaticResource fileTypeConverter}}"/>
+                            <GridViewColumn Width="80" Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Header_Size]}" 
+                                            DisplayMemberBinding="{Binding Path=Size, Converter={StaticResource sizeConverter}}"/>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Foreground" Value="Black"/>
+                        <EventSetter Event="MouseDoubleClick" Handler="Item_MouseDoubleClick"/>
+                        <EventSetter Event="KeyDown" Handler="Item_ButtonDown"/>
+                        <EventSetter Event="Loaded" Handler="Item_Loaded"/>
+                        <EventSetter Event="Selected" Handler="Item_Selected"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <!-- FILTER -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,0,10">
+                <TextBlock Text="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFIleWindowBase_Filter]}" 
+                           HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="Gray"/>
+                <TextBlock Text="{Binding ElementName=userControl1, Path=ExtensionFilter}" Foreground="Gray"/>
+            </StackPanel>
+
+            <!-- OK|Cancel -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,10">
+                <CheckBox Content="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFileWindowBase_Preview]}" 
+                          Margin="0,0,40,0" VerticalAlignment="Center" x:Name="ShowPreview" IsChecked="True"
+                          Checked="ShowPreview_OnChecked" Unchecked="ShowPreview_OnUnchecked" TabIndex="3" />
+                <Button Content="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_OK]}" 
+                        Height="23" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="75" 
+                        IsDefault="True" Click="buttonOK_Click" TabIndex="4"
+                        IsEnabled="{Binding ElementName=listView1, Path=SelectedIndex, Converter={StaticResource selectedToEnabledConverter}}"/>
+                <Button Content="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Cancel]}" Margin="10,0,10,0" 
+                        Grid.Column="1" Height="23" HorizontalAlignment="Right" Name="button2" VerticalAlignment="Top" Width="75" IsDefault="False" 
+                        IsCancel="True" TabIndex="5" />
+            </StackPanel>
+        </Grid>
+        
+        <!-- Между каталогами и выбором файла -->
+        <GridSplitter HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="5" Grid.Column="1" IsTabStop="False">
+            <GridSplitter.Background>
+                <SolidColorBrush />
+            </GridSplitter.Background>
+        </GridSplitter>
+        
+        <!-- КАТАЛОГИ -->
+        <TreeView Grid.Column="0" Grid.RowSpan="2" Name="treeView1" BorderThickness="0,0,1,0" TabIndex="0">
+            <TreeView.Resources>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="FavoriteItem_DoubleClick"/>
+                    <EventSetter Event="KeyDown" Handler="FavoriteItem_KeyDown"/>
+                </Style>
+                <Translator:MinusConverter x:Key="MinusConverter"/>
+            </TreeView.Resources>
+
+            <TreeViewItem ItemsSource="{Binding Path=FavoriteDirs, Source={StaticResource IDEState}}" x:Name="FavouriteItem"
+                          Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenProjectWindow_Favourite]}" IsExpanded="True">
+                <TreeViewItem.ItemTemplate>
+                    <DataTemplate>
+                        <Translator:CollapsedTextBlock FullText="{Binding}" ToolTip="{Binding}" 
+                                                       RenderWidth="{Binding ElementName=treeView1, Path=ActualWidth, Converter={StaticResource MinusConverter}}"/>
+                    </DataTemplate>
+                </TreeViewItem.ItemTemplate>
+            </TreeViewItem>
+        </TreeView>
+
+        <!-- Между выбором файла и препдрсомотром -->
+        <Rectangle Grid.Column="2" Width="1" Fill="Gray"/>
+        <GridSplitter Grid.Column="2" Width="5" ResizeBehavior="PreviousAndNext" IsTabStop="False" x:Name="splitter1"
+                      Visibility="{Binding ElementName=ShowPreview, Path=IsChecked, Converter={StaticResource CheckedToVisibilittyConverter}}" 
+                      HorizontalAlignment="Stretch">
+            <GridSplitter.Background>
+                <SolidColorBrush />
+            </GridSplitter.Background>
+        </GridSplitter>
+        <!-- Предпросмотр -->
+
+        <GroupBox Header="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFileWindowBase_Preview]}" Margin="5" Grid.Column="3"
+                  Visibility="{Binding ElementName=ShowPreview, Path=IsChecked, Converter={StaticResource CheckedToVisibilittyConverter}}">
+            <Grid>
+                <TextBox x:Name="PreviewTextBox" Margin="3" BorderThickness="0" IsReadOnly="True" AutoWordSelection="True" 
+                         FontFamily="Courier New"
+                         VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" IsTabStop="False" />
+                <TextBox x:Name="PreviewTextBoxEmpty" VerticalAlignment="Center" HorizontalAlignment="Center"
+                         Text="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFileWindowBase_Preview_NotAvialable], Mode=OneWay}"
+                         Foreground="LightSlateGray"
+                         Visibility="Hidden" Margin="3" BorderThickness="0" IsReadOnly="True" IsTabStop="False" />
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

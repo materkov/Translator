@@ -1,0 +1,42 @@
+﻿<Window x:Class="Translator.HotkeyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Source={StaticResource LocalString}, Path=Dict[HotkeyWindow_Title]}" 
+        Height="{Binding Source={StaticResource IDEState}, Path=HotkeysWindowHeight, Mode=TwoWay}" 
+        Width="{Binding Source={StaticResource IDEState}, Path=HotkeysWindowWidth, Mode=TwoWay}" 
+        Left="{Binding Source={StaticResource IDEState}, Path=HotkeysWindowLeft, Mode=TwoWay}"
+        Top="{Binding Source={StaticResource IDEState}, Path=HotkeysWindowTop, Mode=TwoWay}"
+        WindowStyle="ToolWindow" Closing="Window_Closing" ShowInTaskbar="False" KeyDown="Window_KeyDown">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_SolutionExplorer]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Ctrl+F5" Margin="10,0,0,0"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeCheckboxes]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Ctrl+F6" Margin="10,0,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Code]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Ctrl+F7" Margin="10,0,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_CodeComments]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Ctrl+F8" Margin="10,0,0,0"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Errors]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Ctrl+F9" Margin="10,0,0,0"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Source={StaticResource LocalString}, Path=Dict[Menu_View_Contents]}" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="Ctrl+F10" Margin="10,0,0,0"/>
+    </Grid>
+</Window>

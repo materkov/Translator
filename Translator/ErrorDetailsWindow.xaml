@@ -1,0 +1,8 @@
+﻿<Window x:Class="Translator.ErrorDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Error details" Height="268" Width="681" ResizeMode="CanResize" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <TextBox x:Name="Err" FontFamily="Courier New" TextWrapping="NoWrap" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
+    </Grid>
+</Window>

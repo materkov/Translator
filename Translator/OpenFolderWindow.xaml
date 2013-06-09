@@ -1,0 +1,18 @@
+﻿<Window x:Class="Translator.OpenFolderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFolderWindow_Title]}" Height="469" Width="444" ResizeMode="CanResize" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <TreeView Name="treeView1" Margin="12,12,12,0" Loaded="treeView1_Loaded" />
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="12">
+            <Button Height="23" Width="80"  Content="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFolderWindow_OKButton]}"
+                    IsDefault="True" Click="ButtonOK_Click" />
+            <Button Height="23" Width="80"  Content="{Binding Source={StaticResource LocalString}, Path=Dict[OpenFolderWindow_CancelButton]}" 
+                    Margin="10,0,0,0" IsCancel="True" />
+        </StackPanel>
+    </Grid>
+</Window>

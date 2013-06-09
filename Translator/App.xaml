@@ -1,0 +1,32 @@
+﻿<Application x:Class="Translator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Translator="clr-namespace:Translator"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Translator:LocalString x:Key="LocalString"/>
+        <Translator:IDEState x:Key="IDEState"/>
+        <Translator:ColorToBrushConverter x:Key="colorToBrushConverter"/>
+        <Translator:BorderBrushConverter x:Key="borderBrushConverter"/>
+        <Translator:SelectedToEnabledConverter x:Key="selectedToEnabledConverter" />
+        <Translator:HaveFileConverter x:Key="HaveCurrentFileConverter"/>
+
+        <DataTemplate x:Key="HeaderDataTemplate_Asc">
+            <StackPanel>
+                <Path HorizontalAlignment="Center" x:Name="arrowUp" StrokeThickness="1" Fill="Gray" Data="M 5,0 L 0,4 L 10,4"/>
+                <TextBlock Text="{Binding}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderDataTemplate_Dsc">
+            <StackPanel>
+                <Path HorizontalAlignment="Center" x:Name="arrowUp" StrokeThickness="2" Fill="Gray" Data="M 0,0 L 5,4 L 10,0"/>
+                <TextBlock Text="{Binding}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderDataTemplate_Normal">
+            <StackPanel>
+                <Path HorizontalAlignment="Center" x:Name="arrowUp" StrokeThickness="2" Fill="White" Data="M 0,0 L 5,4 L 10,0"/>
+                <TextBlock Text="{Binding}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Application.Resources>
+</Application>

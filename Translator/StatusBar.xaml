@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Translator.StatusBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="29" d:DesignWidth="402" Background="#FFEEEEEE">
+    <Grid>
+        <StatusBar>
+            <StatusBarItem Name="logItem2" Margin="0,0,10,0">
+                <StatusBarItem.Content>
+                    <TextBlock x:Name="logItem"></TextBlock>
+                </StatusBarItem.Content>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</UserControl>
+
+    

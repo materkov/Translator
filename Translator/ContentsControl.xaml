@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Translator.ContentsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:translator="clr-namespace:Translator"
+             mc:Ignorable="d" Loaded="Control_Loaded"
+             x:Name="userControl1"
+             d:DesignHeight="352" d:DesignWidth="217">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Основное дерево -->
+        <TreeView ItemsSource="{Binding ElementName=userControl1, Path=Structure}" BorderThickness="0,0,0,1" x:Name="treeView" 
+                  Focusable="True" MouseLeftButtonDown="FreeSpace_OnMouseLeftButtonDown">
+            <TreeView.Background>
+                <SolidColorBrush />
+            </TreeView.Background>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Childrens}" DataType="{x:Type translator:Node}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Resources/func.ico" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Name}"/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True"/>
+                    <Setter Property="Focusable" Value="True"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="Item_MouseDoubleClick"/>
+                    <EventSetter Event="KeyDown" Handler="Item_KeyDown"/>
+                    <EventSetter Event="Selected" Handler="Item_Selected"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+
+        <TextBlock x:Name="ErrorTextBlock" Margin="4" Grid.Row="1" Foreground="Gray" MouseLeftButtonDown="FreeSpace_OnMouseLeftButtonDown">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Text" Value="{Binding Source={StaticResource LocalString}, Path=Dict[ContentsWindow_Noerror]}"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=userControl1, Path=Errors}" Value="1">
+                            <Setter Property="Text" Value="{Binding Source={StaticResource LocalString}, Path=Dict[ContentsWindow_ManyEndFunc]}"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ElementName=userControl1, Path=Errors}" Value="2">
+                            <Setter Property="Text" Value="{Binding Source={StaticResource LocalString}, Path=Dict[ContentsWindow_NoEndFunc]}"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+</UserControl>
