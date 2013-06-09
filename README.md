@@ -7,4 +7,4 @@
 
 Скриншоты
 =
-![Screen](https://googledrive.cpm/host/0B_71qBkfK4W9aEJrRUo0bmczcDA)
+![Screen](https://drive.google.com/uc?export=download&id=0B_71qBkfK4W9bUYzYUFLbXBuNnM)
