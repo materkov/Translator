@@ -1,10 +1,11 @@
-Транслятор неизвестного языка
-==========
+# Транслятор неизвестного языка
 
 Работа в рамках курса "Проектирование интерфейсов", 3 курс, мех-мат ПГУ
 
-Скачать бинарник: [https://drive.google.com/uc?export=download&id=0B_71qBkfK4W9aEJrRUo0bmczcDA](https://drive.google.com/uc?export=download&id=0B_71qBkfK4W9aEJrRUo0bmczcDA)
+Скачать бинарник: [/stuff/Translator.zip](/stuff/Translator.zip)
 
-Скриншоты
-==
-![Screen](https://drive.google.com/uc?export=download&id=0B_71qBkfK4W9WU10QTd3MHhhVHM)
+
+## Скриншоты
+
+![Screen1](/stuff/Screen1.jpg)
+![Screen2](/stuff/Screen2.jpg)
