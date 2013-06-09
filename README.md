@@ -2,7 +2,7 @@
 
 Работа в рамках курса "Проектирование интерфейсов", 3 курс, мех-мат ПГУ
 
-Скачать бинарник: [/stuff/Translator.zip](/raw/stuff/Translator.zip?raw)
+Скачать бинарник: [/stuff/Translator.zip](/stuff/Translator.zip?raw=true)
 
 
 ## Скриншоты
