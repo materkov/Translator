@@ -6,6 +6,6 @@
 
 
 ## Скриншоты
-
-![Screen1](/stuff/Screen1.jpg)
 ![Screen2](/stuff/Screen2.jpg)
+![Screen1](/stuff/Screen1.jpg)
+
